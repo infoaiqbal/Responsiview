@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Search, Loader2, Maximize, Minimize, Camera } from 'lucide-react';
 import { Device, Language } from '../types';
 import { devices, translations } from '../constants';
@@ -134,11 +134,6 @@ export default function DeviceViewer({ lang }: ViewerProps) {
         </div>
       </div>
       
-      {/* Info Notice */}
-      <div className="bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 text-xs text-center py-2 px-4 relative z-10 shadow-sm">
-        {t('warning')}
-      </div>
-
       {/* Viewer Area */}
       <div 
         ref={containerRef}
@@ -236,6 +231,11 @@ export default function DeviceViewer({ lang }: ViewerProps) {
             </div>
           </div>
         </div>
+      </div>
+      
+      {/* Info Notice */}
+      <div className="bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 text-xs text-center py-2 px-4 relative z-10 shadow-sm shrink-0">
+        {t('warning')}
       </div>
     </div>
   );

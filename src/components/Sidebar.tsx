@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Home, Globe, Info, Code, Store, Tag, X,
