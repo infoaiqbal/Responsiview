@@ -1,0 +1,10 @@
+{
+  "name": "Responsiview",
+  "description": "Preview any website on various device dimensions like Computer, Android, iPhone, iPad.",
+  "requestFramePermissions": [
+    "display-capture"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
