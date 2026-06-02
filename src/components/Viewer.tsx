@@ -57,18 +57,30 @@ export default function DeviceViewer({ lang }: ViewerProps) {
 
   const handleCapture = async () => {
     try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+        alert('আপনার ব্রাউজার স্ক্রিন ক্যাপচার সাপোর্ট করে না। / Your browser does not support screen capture.');
+        return;
+      }
+
       const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: { displaySurface: 'browser' }
+        video: { displaySurface: 'browser' },
+        audio: false
       } as any);
 
       const video = document.createElement('video');
+      video.muted = true;
+      video.playsInline = true;
+      video.autoplay = true;
       video.srcObject = stream;
       
       await new Promise((resolve) => {
         video.onloadedmetadata = () => {
-          video.play().then(resolve);
+          video.play().then(resolve).catch(resolve);
         };
       });
+
+      // Give it a tiny bit of time to render the first frame
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       const canvas = document.createElement('canvas');
       canvas.width = video.videoWidth;
@@ -77,16 +89,19 @@ export default function DeviceViewer({ lang }: ViewerProps) {
       
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const dataUrl = canvas.toDataURL('image/png');
+        const dataUrl = canvas.toDataURL('image/png', 1.0);
         const link = document.createElement('a');
         link.href = dataUrl;
         link.download = `Responsiview-${activeDevice.name.en}.png`;
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
       }
 
       stream.getTracks().forEach(track => track.stop());
     } catch (error) {
       console.error("Capture failed:", error);
+      alert('স্ক্রিন ক্যাপচার কাজ করেনি। পারমিশন ঠিক আছে কিনা চেক করুন। / Capture failed. Please check permissions.');
     }
   };
 
