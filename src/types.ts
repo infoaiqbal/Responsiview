@@ -14,6 +14,7 @@ export type TranslationKey =
   | 'title' | 'home' | 'language' | 'aboutApp' | 'appStore' 
   | 'developer' | 'version' | 'enterUrl' | 'check' | 'warning' 
   | 'devInfo' | 'aboutInfo' | 'aboutTitle' | 'devTitle' 
-  | 'dark' | 'light' | 'english' | 'bengali' | 'capture';
+  | 'dark' | 'light' | 'english' | 'bengali' | 'capture'
+  | 'urlMode' | 'htmlMode' | 'enterHtml' | 'uploadHtml';
 
 export type Translations = Record<TranslationKey, { en: string; bn: string }>;

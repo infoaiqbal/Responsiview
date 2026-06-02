@@ -28,7 +28,11 @@ export const translations: Translations = {
   light: { en: 'Light Mode', bn: 'লাইট মোড' },
   english: { en: 'English', bn: 'ইংরেজি' },
   bengali: { en: 'Bangla', bn: 'বাংলা' },
-  capture: { en: 'Capture', bn: 'ক্যাপচার' }
+  capture: { en: 'Capture', bn: 'ক্যাপচার' },
+  urlMode: { en: 'Website URL', bn: 'ওয়েবসাইট লিংক' },
+  htmlMode: { en: 'HTML Code / File', bn: 'এইচটিএমএল কোড / ফাইল' },
+  enterHtml: { en: 'Paste your HTML code here...', bn: 'আপনার এইচটিএমএল কোড এখানে পেস্ট করুন...' },
+  uploadHtml: { en: 'Upload HTML File', bn: 'এইচটিএমএল ফাইল আপলোড করুন' }
 };
 
 export const devices: Device[] = [

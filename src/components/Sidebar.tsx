@@ -44,7 +44,7 @@ export default function Sidebar({
             transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
             className="fixed inset-y-0 left-0 w-72 bg-white dark:bg-gray-900 shadow-2xl z-50 flex flex-col"
           >
-            <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between">
+            <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
               <h2 className="text-xl font-bold font-sans text-gray-900 dark:text-white">
                 {t('title')}
               </h2>
@@ -64,7 +64,7 @@ export default function Sidebar({
                 onClick={() => { setView('home'); onClose(); }} 
               />
               
-              <div className="my-2 border-t dark:border-gray-800" />
+              <div className="my-2 border-t border-gray-100 dark:border-gray-800" />
               
               <div className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                 {t('language')}
@@ -84,7 +84,7 @@ export default function Sidebar({
                 </button>
               </div>
 
-              <div className="my-2 border-t dark:border-gray-800" />
+              <div className="my-2 border-t border-gray-100 dark:border-gray-800" />
 
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -94,7 +94,7 @@ export default function Sidebar({
                 {theme === 'dark' ? t('light') : t('dark')}
               </button>
 
-              <div className="my-2 border-t dark:border-gray-800" />
+              <div className="my-2 border-t border-gray-100 dark:border-gray-800" />
 
               <NavItem 
                 icon={<Info size={20} />} 
@@ -121,7 +121,7 @@ export default function Sidebar({
 
             </div>
 
-            <div className="p-4 border-t dark:border-gray-800 flex items-center justify-center text-sm font-medium text-gray-400 dark:text-gray-500 gap-2">
+            <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-center text-sm font-medium text-gray-400 dark:text-gray-500 gap-2">
               <Tag size={16} />
               {t('version')}
             </div>

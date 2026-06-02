@@ -13,6 +13,9 @@ export default function DeviceViewer({ lang }: ViewerProps) {
   
   const [inputUrl, setInputUrl] = useState('https://asifio.blogspot.com');
   const [activeUrl, setActiveUrl] = useState('https://asifio.blogspot.com');
+  const [inputMode, setInputMode] = useState<'url' | 'html'>('url');
+  const [htmlInput, setHtmlInput] = useState('');
+  const [activeHtml, setActiveHtml] = useState('');
   const [activeDevice, setActiveDevice] = useState<Device>(devices[0]);
   const [loading, setLoading] = useState(false);
   const [isScaledToFit, setIsScaledToFit] = useState(true);
@@ -44,6 +47,12 @@ export default function DeviceViewer({ lang }: ViewerProps) {
     }
     setLoading(true);
     setActiveUrl(url);
+  };
+
+  const handleHtmlSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setActiveHtml(htmlInput);
   };
 
   const handleCapture = async () => {
@@ -92,28 +101,90 @@ export default function DeviceViewer({ lang }: ViewerProps) {
       {/* Search and Device Selection Header */}
       <div className="flex flex-col border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black p-4 gap-4 sticky top-0 z-10 shadow-sm">
         
-        {/* URL Bar */}
-        <form onSubmit={handleSubmit} className="flex gap-2 max-w-4xl mx-auto w-full">
-          <div className="relative flex-1">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-              <Search size={18} />
-            </div>
-            <input
-              type="text"
-              value={inputUrl}
-              onChange={(e) => setInputUrl(e.target.value)}
-              placeholder={t('enterUrl')}
-              className="block w-full pl-10 pr-3 py-3 border border-gray-200 dark:border-gray-800 rounded-xl leading-5 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
-            />
+        {/* Mode Toggle */}
+        <div className="flex justify-center">
+          <div className="flex inline-flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+            <button
+              type="button"
+              className={`px-6 py-1.5 text-sm font-medium rounded-md transition-colors ${inputMode === 'url' ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+              onClick={() => setInputMode('url')}
+            >
+              {t('urlMode')}
+            </button>
+            <button
+              type="button"
+              className={`px-6 py-1.5 text-sm font-medium rounded-md transition-colors ${inputMode === 'html' ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+              onClick={() => setInputMode('html')}
+            >
+              {t('htmlMode')}
+            </button>
           </div>
-          <button
-            type="submit"
-            disabled={!inputUrl}
-            className="flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50 dark:focus:ring-offset-black"
-          >
-            {t('check')}
-          </button>
-        </form>
+        </div>
+
+        {/* Input Area */}
+        {inputMode === 'url' ? (
+          <form onSubmit={handleSubmit} className="flex gap-2 max-w-4xl mx-auto w-full">
+            <div className="relative flex-1">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                <Search size={18} />
+              </div>
+              <input
+                type="text"
+                value={inputUrl}
+                onChange={(e) => setInputUrl(e.target.value)}
+                placeholder={t('enterUrl')}
+                className="block w-full pl-10 pr-3 py-3 border border-gray-200 dark:border-gray-800 rounded-xl leading-5 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={!inputUrl}
+              className="flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50 dark:focus:ring-offset-black shrink-0"
+            >
+              {t('check')}
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleHtmlSubmit} className="flex flex-col gap-2 max-w-4xl mx-auto w-full">
+            <div className="flex gap-2 items-start w-full">
+              <textarea
+                value={htmlInput}
+                onChange={(e) => setHtmlInput(e.target.value)}
+                placeholder={t('enterHtml')}
+                rows={2}
+                className="block w-full p-3 border border-gray-200 dark:border-gray-800 rounded-xl leading-5 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors resize-y"
+              />
+              <button
+                type="submit"
+                disabled={!htmlInput.trim()}
+                className="flex items-center justify-center h-[50px] px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50 dark:focus:ring-offset-black shrink-0"
+              >
+                {t('check')}
+              </button>
+            </div>
+            <div className="flex justify-start">
+              <label className="cursor-pointer inline-flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors font-medium">
+                <input
+                  type="file"
+                  accept=".html,.htm"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (event) => {
+                        setHtmlInput(event.target?.result as string);
+                      };
+                      reader.readAsText(file);
+                    }
+                  }}
+                />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                {t('uploadHtml')}
+              </label>
+            </div>
+          </form>
+        )}
 
         {/* Device Toggles */}
         <div className="flex justify-center flex-wrap gap-2">
@@ -221,7 +292,8 @@ export default function DeviceViewer({ lang }: ViewerProps) {
               
               <iframe
                 ref={iframeRef}
-                src={activeUrl}
+                src={inputMode === 'url' ? activeUrl : undefined}
+                srcDoc={inputMode === 'html' ? activeHtml : undefined}
                 sandbox="allow-scripts allow-same-origin allow-forms"
                 className="w-full h-full border-none bg-white block"
                 onLoad={() => setLoading(false)}
