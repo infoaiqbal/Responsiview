@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Menu } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import Viewer from './components/Viewer';
+import DeveloperProfile from './components/DeveloperProfile';
 import { Language, Theme, ViewState } from './types';
 import { translations } from './constants';
 
@@ -76,24 +77,7 @@ export default function App() {
           </div>
         )}
 
-        {view === 'developer' && (
-          <div className="h-full overflow-y-auto p-8 bg-gray-50 dark:bg-[#0a0a0a]">
-            <div className="max-w-2xl mx-auto bg-white dark:bg-gray-900 p-8 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800">
-              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t('devTitle')}</h2>
-              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-                {t('devInfo')}
-              </p>
-              <a 
-                href="https://asifio.blogspot.com/p/appstore.html" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="mt-6 inline-block px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition"
-              >
-                {t('appStore')}
-              </a>
-            </div>
-          </div>
-        )}
+        {view === 'developer' && <DeveloperProfile />}
       </main>
 
       {/* Drawer Overlay */}

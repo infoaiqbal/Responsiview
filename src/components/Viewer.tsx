@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, Loader2, Maximize, Minimize, Camera } from 'lucide-react';
+import { Search, Loader2, Maximize, Minimize } from 'lucide-react';
 import { Device, Language } from '../types';
 import { devices, translations } from '../constants';
 import * as Icons from 'lucide-react';
@@ -19,6 +19,7 @@ export default function DeviceViewer({ lang }: ViewerProps) {
   const [activeDevice, setActiveDevice] = useState<Device>(devices[0]);
   const [loading, setLoading] = useState(false);
   const [isScaledToFit, setIsScaledToFit] = useState(true);
+  const [captureError, setCaptureError] = useState<string | null>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -58,10 +59,12 @@ export default function DeviceViewer({ lang }: ViewerProps) {
   const handleCapture = async () => {
     try {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
-        alert('আপনার ব্রাউজার স্ক্রিন ক্যাপচার সাপোর্ট করে না। / Your browser does not support screen capture.');
+        setCaptureError('মোবাইল ব্রাউজার বা আপনার বর্তমান ব্রাউজারে এই ফিচারটি সাপোর্ট করে না। ডেস্কটপ ব্রাউজার ব্যবহার করুন। / Mobile browsers do not support screen capture.');
+        setTimeout(() => setCaptureError(null), 5000);
         return;
       }
 
+      setCaptureError(null);
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: { displaySurface: 'browser' },
         audio: false
@@ -101,7 +104,8 @@ export default function DeviceViewer({ lang }: ViewerProps) {
       stream.getTracks().forEach(track => track.stop());
     } catch (error) {
       console.error("Capture failed:", error);
-      alert('স্ক্রিন ক্যাপচার কাজ করেনি। পারমিশন ঠিক আছে কিনা চেক করুন। / Capture failed. Please check permissions.');
+      setCaptureError('স্ক্রিন ক্যাপচার কাজ করেনি। পারমিশন ঠিক আছে কিনা চেক করুন। / Capture failed. Please check permissions.');
+      setTimeout(() => setCaptureError(null), 5000);
     }
   };
 
@@ -201,6 +205,13 @@ export default function DeviceViewer({ lang }: ViewerProps) {
           </form>
         )}
 
+        {/* Capture Error Message */}
+        {captureError && (
+          <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm py-2 px-4 text-center border-b border-red-200 dark:border-red-900/50">
+            {captureError}
+          </div>
+        )}
+
         {/* Device Toggles */}
         <div className="flex justify-center flex-wrap gap-2">
           {devices.map(device => (
@@ -240,15 +251,6 @@ export default function DeviceViewer({ lang }: ViewerProps) {
               title={isScaledToFit ? 'View full real size' : 'Scale to fit screen'}
             >
               {isScaledToFit ? <Maximize size={16} /> : <Minimize size={16} />}
-            </button>
-            
-            {/* Capture Button */}
-            <button
-              onClick={handleCapture}
-              className="p-2 rounded-full bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-              title={t('capture')}
-            >
-              <Camera size={16} />
             </button>
           </div>
 
